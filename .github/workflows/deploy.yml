@@ -1,0 +1,23 @@
+name: Deploy shop to Timeweb
+
+on:
+  push:
+    branches:
+      - main  # или другая ветка, которую ты используешь
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Upload "shop" folder to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.TIMEWEB_HOST }}
+        username: ${{ secrets.TIMEWEB_USER }}
+        key: ${{ secrets.TIMEWEB_SSH_KEY }}
+        source: "shop/"
+        target: "/home/USERNAME/public_html/shop/"
