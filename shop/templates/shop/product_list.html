@@ -1,0 +1,127 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ subcategory.name }} | SimpleAdd{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'category_list' %}">Каталог</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'category_detail' subcategory.category.id %}">{{ subcategory.category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ subcategory.name }}</li>
+        </ol>
+    </nav>
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+            Сортировка
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="?sort=price">По возрастанию цены</a></li>
+            <li><a class="dropdown-item" href="?sort=-price">По убыванию цены</a></li>
+            <li><a class="dropdown-item" href="?sort=name">По названию (А-Я)</a></li>
+            <li><a class="dropdown-item" href="?sort=-name">По названию (Я-А)</a></li>
+        </ul>
+    </div>
+</div>
+
+<h2 class="fw-bold mb-4">{{ subcategory.name }}</h2>
+
+{% if subcategory.description %}
+<div class="card mb-4">
+    <div class="card-body">
+        {{ subcategory.description|safe }}
+    </div>
+</div>
+{% endif %}
+
+<div class="row g-4">
+    {% for product in products %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="card h-100">
+            <a href="{% url 'product_detail' slug=product.slug %}">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: contain; padding: 20px;">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-box-open fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">{{ product.name }}</a>
+                </h5>
+                <p class="card-text text-muted">{{ product.short_description|default:""|truncatechars:100 }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-primary">Подробнее</a>
+                <button class="btn btn-sm btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#quickOrderModal{{ product.id }}">
+                    <i class="fas fa-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Order Modal -->
+        <div class="modal fade" id="quickOrderModal{{ product.id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Быстрый заказ: {{ product.name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'order_product' product.id %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">Ваше имя</label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Телефон</label>
+                                <input type="tel" name="phone" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Товары в этой категории отсутствуют</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Назад</a>
+            </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Вперед</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

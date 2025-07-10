@@ -1,0 +1,131 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Главная | SimpleAdd{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+ {# — Hero Slider (Slick) — #}
+  {% if slider %}
+  <section class="hero-slider mb-5">
+    {% for image in slider.images.all %}
+    <div>
+      <img src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
+      {% if image.caption %}
+      <div class="carousel-caption d-none d-md-block">
+        <h5>{{ image.caption }}</h5>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+<!-- Categories Section -->
+<section class="mb-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Категории товаров</h2>
+            <a href="{% url 'category_list' %}" class="btn btn-outline-primary">Все категории</a>
+        </div>
+
+        <div class="row g-4">
+            {% for category in categories %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <a href="{% url 'category_detail' category.id %}">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}" class="card-img-top" alt="{{ category.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="fas fa-box-open fa-3x text-muted"></i>
+                            </div>
+                        {% endif %}
+                    </a>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <a href="{% url 'category_detail' category.id %}" class="text-decoration-none text-dark">{{ category.name }}</a>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+<section class="mb-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Последние статьи</h2>
+            <a href="{% url 'post_list' %}" class="btn btn-outline-primary">Все статьи</a>
+        </div>
+
+        <div class="row g-4">
+            {% for post in posts %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text text-muted">{{ post.content|striptags|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'post_detail' post.id %}" class="btn btn-sm btn-primary">Читать далее</a>
+                        <small class="text-muted float-end">{{ post.created_at|date:"d.m.Y" }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Advantages Section -->
+<!-- Advantages Section -->
+<section class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Почему выбирают нас</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 text-center">
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Гарантия качества</h5>
+                        <p class="card-text text-muted mb-0">Официальная гарантия на все оборудование</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <i class="fas fa-truck fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Быстрая доставка</h5>
+                        <p class="card-text text-muted mb-0">Доставка по всей России от 1 дня</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Техподдержка</h5>
+                        <p class="card-text text-muted mb-0">Квалифицированная техническая поддержка</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <i class="fas fa-user-tie fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Профессионализм</h5>
+                        <p class="card-text text-muted mb-0">Опыт работы более 10 лет</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

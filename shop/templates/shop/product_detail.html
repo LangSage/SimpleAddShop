@@ -1,0 +1,164 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}
+  {% if product.meta_title %}
+    {{ product.meta_title }}
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block meta_description %}
+  {% if product.meta_description %}
+    {{ product.meta_description }}
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block meta_keywords %}
+  {% if product.meta_keywords %}
+    {{ product.meta_keywords }}
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <img id="mainProductImage" src="{{ product.image.url }}" class="card-img-top main-product-img" alt="{{ product.name }}">
+            {% if product.images.all %}
+            <div class="card-body">
+                <div class="row g-2">
+                    {% for image in product.images.all %}
+                    <div class="col-3">
+                        <img src="{{ image.image.url }}" class="img-thumbnail thumbnail-img" alt="Gallery image" onclick="changeMainImage(this)">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-primary">{{ product.category.name }}</span>
+                    <span class="text-muted">Артикул: {{ product.sku|default:"не указан" }}</span>
+                </div>
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs mb-3" id="productTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#about">Описание</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#usage">Применение</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#docs">Документы</a>
+                    </li>
+                </ul>
+
+                <!-- Tab content -->
+                <div class="tab-content mb-4">
+                    <div class="tab-pane fade show active" id="about">
+                        {{ product.description|safe }}
+                    </div>
+                    <div class="tab-pane fade" id="usage">
+                        {{ product.usage|safe }}
+                    </div>
+                    <div class="tab-pane fade" id="docs">
+                        {% if product.document %}
+                            <a href="{{ product.document.url }}" class="btn btn-outline-primary" download>
+                                <i class="fas fa-download me-2"></i>Скачать документацию
+                            </a>
+                        {% else %}
+                            <p class="text-muted">Документация отсутствует</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button class="btn btn-primary btn-lg me-md-2" data-bs-toggle="modal" data-bs-target="#orderModal">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказать
+                    </button>
+                    <a href="{% url 'category_detail' product.category.id %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Назад
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Заказ товара: {{ product.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'order_product' product.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Ваше имя</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" name="phone" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Комментарий</label>
+                        <textarea name="message" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeMainImage(thumbnail) {
+        document.getElementById('mainProductImage').src = thumbnail.src;
+    }
+</script>
+{% endblock %}
+
+{% block related_posts %}
+{% if product.related_posts.all %}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Рекомендуем к прочтению</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            {% for post in product.related_posts.all %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ post.title }}</h6>
+                        <a href="{% url 'post_detail' post.id %}" class="btn btn-sm btn-outline-primary mt-2">Читать</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

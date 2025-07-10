@@ -1,0 +1,33 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+    <h2>Все посты</h2>
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-12 mb-4">
+                <a href="{% url 'post_detail' post.id %}" class="card-link">
+                    <div class="card h-100">
+                        <div class="row g-0 d-flex align-items-center">
+                            <!-- Image on the left -->
+                            {% if post.image %}
+                            <div class="col-md-4">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded-start">
+                            </div>
+                            {% endif %}
+                            <!-- Text content on the right -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h3 class="card-title">{{ post.title }}</h3>
+                                    <p class="card-text">{{ post.content|slice:":100" }}...</p>
+                                    <span class="btn btn-primary mt-2">Читать далее</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

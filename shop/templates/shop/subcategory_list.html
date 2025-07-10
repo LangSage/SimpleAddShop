@@ -1,0 +1,35 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ category.name }} - Подкатегории{% endblock %}
+
+{% block content %}
+    <h2>Подкатегории для {{ category.name }}</h2>
+    <div class="row">
+        {% for subcategory in subcategories %}
+            <div class="col-md-4 col-lg-3 col-sm-6 d-flex align-items-stretch ">
+                <div class="card">
+                    {% if subcategory.image %}
+                        <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid">
+                    {% endif %}
+                   <h3><a href="{% url 'product_detail' slug=product.slug %}">{{ product.name }}</a></h3>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Товары без подкатегорий</h2>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
+                <div class="card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                    {% endif %}
+                    <h3><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
+                    <p>{{ product.description|slice:":50" }}...</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

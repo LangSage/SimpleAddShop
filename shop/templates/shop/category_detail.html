@@ -1,0 +1,49 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ category.name }} - Категория{% endblock %}
+{% block content %}
+    <h2>{{ category.name }}</h2>
+    <div class="category-container">
+        {% if category.image %}
+            <div class="category-image">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
+            </div>
+        {% endif %}
+        <div class="category-description">
+            <p>{{ category.description }}</p>
+        </div>
+    </div>
+
+    <h2>Подкатегории</h2>
+    <div class="row">
+        {% for subcategory in subcategories %}
+            <div class="col-md-4">
+                <a href="{% url 'product_list' subcategory.id %}" class="card-link">
+                    <div class="card">
+                        {% if subcategory.image %}
+                            <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid">
+                        {% endif %}
+                        <h3>{{ subcategory.name }}</h3>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Товары</h2>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <a href="{% url 'product_detail' slug=product.slug %}" class="card-link">
+                    <div class="card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                        {% endif %}
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.description|striptags|slice:":50" }}...</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Main Product Image Column -->
+        <div class="col-12 col-md-6">
+            <!-- Main Product Image (with smaller size) -->
+            <img id="mainProductImage" src="{{ product.image.url }}" class="img-fluid main-product-img mt-4" alt="{{ product.name }}">
+
+            <!-- Gallery of Additional Images (Thumbnails) -->
+            {% if product.images.all %}
+                <div class="gallery mt-3">
+                    <div class="gallery-thumbnails-container row">
+                        {% for image in product.images.all %}
+                            <div class="col-3 col-sm-2 col-md-3 mb-2">
+                                <img src="{{ image.image.url }}" class="thumbnail-img img-thumbnail w-100" alt="Gallery image for {{ product.name }}" onclick="changeMainImage(this)">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Product Info Column with Smaller Text -->
+        <div class="col-12 col-md-6 mt-3 mt-md-0">
+            <h1 class="product-title">{{ product.name }}</h1>
+
+            <p class="lead product-description">{{ product.description|safe }}</p>
+<!--            <h3 class="product-characteristics-title">Характеристики:</h3>-->
+                 <button type="button" class="btn btn-primary btn-lg fw-bold mt-3" data-bs-toggle="modal" data-bs-target="#orderModal">
+                Заказать
+            </button>
+<!-- Order Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Форма заказа</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScQv5qrtgAVqszc_zPskKcMVmzyFQherrx1zR5D7TThz37VYw/viewform?embedded=true"
+                            width="100%" height="550" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <ul class="product-characteristics-list">
+                {% for key, value in product.characteristics.items %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'category_detail' product.category.id %}" class="btn btn-secondary">Назад к категории</a>
+        </div>
+    </div>
+
+<!-- Tabs navigation -->
+<ul class="nav nav-tabs mt-4" id="productTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="true">О продукте</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="usage-tab" data-bs-toggle="tab" data-bs-target="#usage" type="button" role="tab" aria-controls="usage" aria-selected="false">Возможности использования</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="docs-tab" data-bs-toggle="tab" data-bs-target="#docs" type="button" role="tab" aria-controls="docs" aria-selected="false">Документы</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="false">Видео</button>
+    </li>
+</ul>
+
+<!-- Tabs content -->
+<div class="tab-content mt-3" id="productTabsContent">
+    <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+        {{ product.description|safe }}
+    </div>
+    <div class="tab-pane fade" id="usage" role="tabpanel" aria-labelledby="usage-tab">
+        <!-- You can create a new field product.usage or hardcode for now -->
+        <p>Здесь информация о возможностях использования продукта.</p>
+    </div>
+    <div class="tab-pane fade" id="docs" role="tabpanel" aria-labelledby="docs-tab">
+        <!-- You can link PDF files or write text -->
+        <p>Документы (можно прикрепить PDF или ссылки).</p>
+    </div>
+    <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+        <!-- Embed video or link -->
+        <p>Видео о продукте (можно вставить iframe Youtube или mp4).</p>
+    </div>
+</div>
+
+
+    <!-- JavaScript to handle image switching -->
+    <script>
+        function changeMainImage(thumbnail) {
+            var mainImage = document.getElementById("mainProductImage");
+            mainImage.src = thumbnail.src;
+        }
+    </script>
+
+{% endblock %}
+
+{% block related_posts %}
+    <div class="related-posts-container">
+        {% for post in product.related_posts.all %}
+            <div class="related-post-item">
+                <a href="{% url 'post_detail' post.id %}" class="related-post-title">{{ post.title }}</a>
+                <img src="{{ post.image.url }}" class="related-post-image" alt="{{ post.title }}">
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
