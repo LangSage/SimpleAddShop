@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: #333;
   background-color: #f9f9f9;
   overflow-x: hidden;
@@ -50,4 +50,16 @@ body {
 @media (max-width: 768px) {
   .navbar-brand img { height: 40px; }
   .hero-slider .slick-slide img { height: 280px; }
+}
+
+.navbar-custom {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.navbar-custom .nav-link {
+  color: #fff;
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--accent-color);
 }
