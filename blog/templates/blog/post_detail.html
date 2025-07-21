@@ -5,161 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<style>
-    /* Post Detail Styling */
-    .post-detail {
-        line-height: 1.8; /* Improve readability */
-        font-size: 1.1rem; /* Slightly larger font for better legibility */
-        color: #444; /* Softer color for comfortable reading */
-    }
 
-    .post-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 1rem;
-    }
-
-    .post-meta {
-        font-size: 0.9rem;
-        color: #888; /* Muted color for metadata */
-        margin-bottom: 1.5rem;
-        font-style: italic; /* Different style for date to separate it visually */
-    }
-
-    .post-content p {
-        margin-bottom: 1.2rem; /* Add space between paragraphs for readability */
-    }
-
-    /* Image Styling */
-    .post-image {
-        width: 100%;
-        max-height: 500px; /* Limit the height to avoid overwhelming the page */
-        object-fit: cover; /* Ensure the image fits nicely without distortion */
-        border-radius: 10px; /* Rounded corners for a softer appearance */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-        margin-bottom: 2rem; /* Space below the image to separate from text */
-    }
-
-    /* Related Products Styling */
-    .related-products-sidebar {
-        padding: 1rem;
-    }
-
-    .related-products {
-        display: flex;
-        flex-direction: column; /* Stack related products vertically */
-    }
-
-    .product-item {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap; /* Wrap product content to stay within the container */
-    }
-
-    .product-image {
-        width: 70px;
-        height: 70px;
-        object-fit: cover;
-        border-radius: 5px;
-        flex-shrink: 0; /* Prevent the image from shrinking */
-    }
-
-    .product-title {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .product-description {
-        font-size: 0.9rem;
-        color: #555;
-    }
-
-    /* Related Post Item Styling */
-    .related-post-item {
-        text-align: center;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 8px;
-        background-color: #f9f9f9;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
-    }
-
-    .related-post-item:hover {
-        transform: scale(1.05);
-    }
-
-    .related-post-image {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-
-    .related-post-title {
-        font-size: 1rem;
-        color: #333;
-    }
-
-    .random-posts h4 {
-        font-weight: bold;
-        color: #007bff;
-    }
-
-    /* Card Hover Effect */
-    .card:hover {
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: box-shadow 0.3s ease-in-out;
-    }
-
-    /* Responsive Fix for Sidebar */
-    @media (max-width: 991px) {
-        /* Make the sidebar full-width below the main content */
-        .related-products-sidebar {
-            margin-top: 2rem;
-            padding: 0.5rem;
-        }
-
-        .related-products-sidebar .card {
-            width: 100%; /* Ensure the card takes up the full width */
-        }
-
-        /* Ensure product items do not overflow */
-        .product-item {
-            flex-direction: row;
-            align-items: flex-start;
-        }
-
-        .product-image {
-            width: 60px; /* Slightly smaller for mobile */
-            height: 60px;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-item div {
-            max-width: calc(100% - 70px); /* Ensure content doesn't overflow */
-        }
-    }
-
-    @media (max-width: 575px) {
-        /* For very small screens like phones */
-        .product-item {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .product-image {
-            margin-bottom: 0.5rem;
-        }
-
-        .product-item div {
-            max-width: 100%;
-        }
-    }
-</style>
 
 <div class="container mt-4">
     <div class="row">
@@ -170,7 +16,7 @@
                 <p class="post-meta">Опубликовано: {{ post.published_date }}</p>
 
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="img-fluid post-image" alt="{{ post.title }}">
+                <img src="{{ post.image.url }}" class="img-fluid post-image" style="width:100%;max-height:500px;object-fit:cover;border-radius:10px;" alt="{{ post.title }}">
                 {% endif %}
 
                 <div class="post-content">
@@ -221,7 +67,7 @@
                     <a href="{% url 'post_detail' post.id %}" class="text-decoration-none text-dark d-flex flex-column h-100">
                         {% if post.image %}
                             <div class="related-post-image-wrapper">
-                                <img src="{{ post.image.url }}" class="related-post-image" alt="{{ post.title }}">
+                                <img src="{{ post.image.url }}" class="related-post-image" style="width:100%;height:200px;object-fit:cover;" alt="{{ post.title }}">
                             </div>
                         {% endif %}
                         <div class="related-post-body p-3 d-flex flex-column justify-content-between flex-grow-1">
@@ -237,66 +83,7 @@
     </div>
 </div>
 
-<style>
-    .random-posts h4 {
-        font-weight: bold;
-        color: #007bff; /* Highlighting the heading color */
-        border-bottom: 2px solid #007bff; /* Add a border to create emphasis */
-    }
 
-    .related-post-item {
-        text-align: left;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #ffffff;
-        transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-        overflow: hidden; /* Ensure nothing overflows the card */
-    }
-
-    .related-post-item:hover {
-        transform: translateY(-5px); /* Add a lift effect on hover */
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); /* Deeper shadow to indicate interaction */
-    }
-
-    .related-post-image-wrapper {
-        width: 100%;
-        height: 200px; /* Fixed height with aspect ratio maintenance */
-        overflow: hidden; /* Prevent overflow of the image */
-    }
-
-    .related-post-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Cover without squishing */
-        transition: transform 0.3s ease-in-out; /* Zoom effect on image hover */
-    }
-
-    .related-post-item:hover .related-post-image {
-        transform: scale(1.05); /* Slight zoom on hover */
-    }
-
-    .related-post-body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .related-post-title {
-        font-size: 1rem;
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-
-    .btn-outline-primary {
-        font-size: 0.85rem;
-    }
-
-    /* Responsive Fixes */
-    @media (max-width: 767px) {
-        .related-post-item {
-            margin-bottom: 1.5rem; /* Add some space between cards on smaller screens */
-        }
-    }
-</style>
 
 
 

@@ -3,31 +3,40 @@
 {% block title %}{{ category.name }} - Подкатегории{% endblock %}
 
 {% block content %}
-    <h2>Подкатегории для {{ category.name }}</h2>
-    <div class="row">
+    <h2 class="mb-4">Подкатегории для {{ category.name }}</h2>
+    <div class="row g-4">
         {% for subcategory in subcategories %}
-            <div class="col-md-4 col-lg-3 col-sm-6 d-flex align-items-stretch ">
-                <div class="card">
+            <div class="col-md-4 col-lg-3 col-sm-6 d-flex align-items-stretch">
+                <div class="card h-100 text-center">
                     {% if subcategory.image %}
-                        <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid">
+                        <img src="{{ subcategory.image.url }}" class="card-img-top" style="height:200px;object-fit:contain;" alt="{{ subcategory.name }}">
                     {% endif %}
-                   <h3><a href="{% url 'product_detail' slug=product.slug %}">{{ product.name }}</a></h3>
-
+                    <div class="card-body">
+                        <h5 class="card-title">{{ subcategory.name }}</h5>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'product_list' subcategory.id %}" class="btn btn-sm btn-primary">Смотреть товары</a>
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <h2>Товары без подкатегорий</h2>
-    <div class="row">
+    <h2 class="mt-5 mb-4">Товары без подкатегорий</h2>
+    <div class="row g-4">
         {% for product in products %}
             <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
-                <div class="card">
+                <div class="card h-100 text-center">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                        <img src="{{ product.image.url }}" class="card-img-top" style="height:200px;object-fit:contain;" alt="{{ product.name }}">
                     {% endif %}
-                    <h3><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
-                    <p>{{ product.description|slice:":50" }}...</p>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.description|slice:':50' }}...</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-primary">Подробнее</a>
+                    </div>
                 </div>
             </div>
         {% endfor %}
