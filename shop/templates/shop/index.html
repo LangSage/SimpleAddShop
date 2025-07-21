@@ -3,13 +3,13 @@
 {% block title %}Главная | SimpleAdd{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
- {# — Hero Slider (Slick) — #}
-  {% if slider %}
-  <section class="hero-slider mb-5">
+<!-- Hero Section using Bootstrap carousel -->
+{% if slider %}
+<div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
     {% for image in slider.images.all %}
-    <div>
-      <img src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <img src="{{ image.image.url }}" class="d-block w-100" alt="Slide {{ forloop.counter }}">
       {% if image.caption %}
       <div class="carousel-caption d-none d-md-block">
         <h5>{{ image.caption }}</h5>
@@ -17,8 +17,17 @@
       {% endif %}
     </div>
     {% endfor %}
-  </section>
-  {% endif %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% endif %}
 
 <!-- Categories Section -->
 <section class="mb-5">
