@@ -52,6 +52,15 @@
                     <span class="text-muted">Артикул: {{ product.sku|default:"не указан" }}</span>
                 </div>
 
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+                    <button class="btn btn-primary btn-lg me-md-2" data-bs-toggle="modal" data-bs-target="#orderModal">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказать
+                    </button>
+                    <a href="{% url 'category_detail' product.category.id %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Назад
+                    </a>
+                </div>
+
                 <!-- Tabs -->
                 <ul class="nav nav-tabs mb-3" id="productTabs">
                     <li class="nav-item">
@@ -84,14 +93,6 @@
                     </div>
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <button class="btn btn-primary btn-lg me-md-2" data-bs-toggle="modal" data-bs-target="#orderModal">
-                        <i class="fas fa-shopping-cart me-2"></i>Заказать
-                    </button>
-                    <a href="{% url 'category_detail' product.category.id %}" class="btn btn-outline-secondary btn-lg">
-                        <i class="fas fa-arrow-left me-2"></i>Назад
-                    </a>
-                </div>
             </div>
         </div>
     </div>
