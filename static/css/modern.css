@@ -51,3 +51,28 @@ body {
   .navbar-brand img { height: 40px; }
   .hero-slider .slick-slide img { height: 280px; }
 }
+
+/* Product card images */
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  padding: 10px;
+}
+
+/* Product gallery */
+.main-product-img {
+  width: 100%;
+  height: 450px;
+  object-fit: contain;
+}
+
+.thumbnail-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .main-product-img { height: 300px; }
+}

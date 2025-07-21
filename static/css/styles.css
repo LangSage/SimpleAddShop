@@ -33,7 +33,7 @@ body {
     top: -20px; /* Align top with parent */
     width: 100vw; /* Stretch to the full width of the viewport */
     max-width: calc(100vw - 20px); /* Ensure it doesn't exceed viewport width with some padding */
-    background-color: #f8f9fa; /* Background color */
+    background-color: #ffffff; /* Background color */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for better visibility */
     padding: 1rem; /* Padding for content */
     z-index: 1000; /* Ensure it appears above other content */
@@ -48,7 +48,7 @@ body {
 .subcategory-list .nav-link {
     display: block;
     padding: 0.5rem 1rem; /* Adjust padding as needed */
-    color: #333; /* Link color */
+    color: #212529; /* Link color */
     text-decoration: none;
 }
 
