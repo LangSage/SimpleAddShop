@@ -4,20 +4,29 @@
 
 {% block content %}
 <!-- Hero Section -->
- {# — Hero Slider (Slick) — #}
   {% if slider %}
-  <section class="hero-slider mb-5">
-    {% for image in slider.images.all %}
-    <div>
-      <img src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
-      {% if image.caption %}
-      <div class="carousel-caption d-none d-md-block">
-        <h5>{{ image.caption }}</h5>
+  <div id="heroCarousel" class="carousel slide carousel-fade mb-5 hero-slider" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for image in slider.images.all %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ image.image.url }}" class="d-block w-100" alt="Slide {{ forloop.counter }}">
+        {% if image.caption %}
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{ image.caption }}</h5>
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
+      {% endfor %}
     </div>
-    {% endfor %}
-  </section>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
   {% endif %}
 
 <!-- Categories Section -->
