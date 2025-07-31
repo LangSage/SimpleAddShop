@@ -3,33 +3,86 @@
 {% block title %}{{ category.name }} - Подкатегории{% endblock %}
 
 {% block content %}
-    <h2>Подкатегории для {{ category.name }}</h2>
-    <div class="row">
-        {% for subcategory in subcategories %}
-            <div class="col-md-4 col-lg-3 col-sm-6 d-flex align-items-stretch ">
-                <div class="card">
-                    {% if subcategory.image %}
-                        <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid">
-                    {% endif %}
-                   <h3><a href="{% url 'product_detail' slug=product.slug %}">{{ product.name }}</a></h3>
+<div class="mb-5">
+  <div class="d-flex align-items-center mb-4">
+    <h1 class="mb-0">{{ category.name }}</h1>
+    <span class="badge bg-primary ms-3 align-middle" style="font-size: 1rem; padding: 0.5rem 1rem;">
+      {{ subcategories.count }} подкатегорий
+    </span>
+  </div>
 
-                </div>
-            </div>
-        {% endfor %}
+  {% if category.description %}
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body">
+      {{ category.description|safe }}
     </div>
+  </div>
+  {% endif %}
+</div>
 
-    <h2>Товары без подкатегорий</h2>
-    <div class="row">
-        {% for product in products %}
-            <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
-                <div class="card">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
-                    {% endif %}
-                    <h3><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
-                    <p>{{ product.description|slice:":50" }}...</p>
-                </div>
+<!-- Subcategories -->
+<div class="mb-5">
+  <h2 class="section-title d-inline-block mb-4">Подкатегории</h2>
+  <div class="row g-4">
+    {% for subcategory in subcategories %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+      <a href="{% url 'product_list' subcategory.id %}" class="text-decoration-none">
+        <div class="card h-100">
+          {% if subcategory.image %}
+            <img src="{{ subcategory.image.url }}" class="card-img-top" alt="{{ subcategory.name }}" style="height: 180px; object-fit: cover;">
+          {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+              <i class="fas fa-box-open fa-3x text-muted"></i>
             </div>
-        {% endfor %}
+          {% endif %}
+          <div class="card-body text-center">
+            <h5 class="card-title text-dark mb-0">{{ subcategory.name }}</h5>
+            <small class="text-muted">{{ subcategory.product_count }} товаров</small>
+          </div>
+        </div>
+      </a>
     </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        Подкатегории пока не добавлены
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Products without subcategories -->
+{% if products %}
+<div class="mb-4">
+  <h2 class="section-title d-inline-block mb-4">Товары без подкатегорий</h2>
+  <div class="row g-4">
+    {% for product in products %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+      <div class="card h-100">
+        <a href="{% url 'product_detail' slug=product.slug %}">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: contain; padding: 1rem;">
+          {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+              <i class="fas fa-box-open fa-3x text-muted"></i>
+            </div>
+          {% endif %}
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{% url 'product_detail' slug=product.slug %}" class="text-decoration-none text-dark">{{ product.name }}</a>
+          </h5>
+          <p class="card-text text-muted">{{ product.short_description|default:""|truncatechars:100 }}</p>
+        </div>
+        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+          <span class="fw-bold text-primary">{{ product.price }} ₽</span>
+          <button class="btn btn-sm btn-primary">В корзину</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 {% endblock %}

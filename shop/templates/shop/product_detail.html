@@ -28,7 +28,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card mb-4">
-            <img id="mainProductImage" src="{{ product.image.url }}" class="card-img-top main-product-img" alt="{{ product.name }}" style="width:100%; height:300px; object-fit:contain;">
+            <img id="mainProductImage" src="{{ product.image.url }}" class="card-img-top main-product-img" alt="{{ product.name }}">
             {% if product.images.all %}
             <div class="card-body">
                 <div class="row g-2">
@@ -50,15 +50,6 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="badge bg-primary">{{ product.category.name }}</span>
                     <span class="text-muted">Артикул: {{ product.sku|default:"не указан" }}</span>
-                </div>
-
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
-                    <button class="btn btn-primary me-md-2" data-bs-toggle="modal" data-bs-target="#orderModal">
-                        <i class="fas fa-shopping-cart me-2"></i>Заказать
-                    </button>
-                    <a href="{% url 'category_detail' product.category.id %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Назад
-                    </a>
                 </div>
 
                 <!-- Tabs -->
@@ -93,6 +84,14 @@
                     </div>
                 </div>
 
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button class="btn btn-primary btn-lg me-md-2" data-bs-toggle="modal" data-bs-target="#orderModal">
+                        <i class="fas fa-shopping-cart me-2"></i>Заказать
+                    </button>
+                    <a href="{% url 'category_detail' product.category.id %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Назад
+                    </a>
+                </div>
             </div>
         </div>
     </div>

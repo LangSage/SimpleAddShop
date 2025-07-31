@@ -1,49 +1,116 @@
 {% extends 'shop/base.html' %}
 
 {% block title %}{{ category.name }} - Категория{% endblock %}
+
 {% block content %}
-    <h2>{{ category.name }}</h2>
-    <div class="category-container">
-        {% if category.image %}
-            <div class="category-image">
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
-            </div>
-        {% endif %}
-        <div class="category-description">
-            <p>{{ category.description }}</p>
+<div class="mb-5">
+  <!-- Category Header -->
+  <div class="d-flex align-items-center mb-4">
+    <h1 class="mb-0">{{ category.name }}</h1>
+    <span class="badge bg-primary ms-3 align-middle" style="font-size: 1rem; padding: 0.5rem 1rem;">
+      {{ products.count }} товаров
+    </span>
+  </div>
+
+  <!-- Category Description -->
+  {% if category.image or category.description %}
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="row g-0">
+      {% if category.image %}
+      <div class="col-md-4">
+        <img src="{{ category.image.url }}" class="img-fluid rounded-start" alt="{{ category.name }}" style="height: 100%; object-fit: cover;">
+      </div>
+      {% endif %}
+      <div class="col-md-8">
+        <div class="card-body">
+          {% if category.description %}
+            {{ category.description|safe }}
+          {% else %}
+            <p class="text-muted mb-0">Описание категории отсутствует</p>
+          {% endif %}
         </div>
+      </div>
     </div>
+  </div>
+  {% endif %}
+</div>
 
-    <h2>Подкатегории</h2>
-    <div class="row">
-        {% for subcategory in subcategories %}
-            <div class="col-md-4">
-                <a href="{% url 'product_list' subcategory.id %}" class="card-link">
-                    <div class="card">
-                        {% if subcategory.image %}
-                            <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid">
-                        {% endif %}
-                        <h3>{{ subcategory.name }}</h3>
-                    </div>
-                </a>
+<!-- Subcategories -->
+{% if subcategories %}
+<div class="mb-5">
+  <h2 class="section-title d-inline-block mb-4">Подкатегории</h2>
+  <div class="row g-4">
+    {% for subcategory in subcategories %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+      <a href="{% url 'product_list' subcategory.id %}" class="text-decoration-none">
+        <div class="card h-100">
+          {% if subcategory.image %}
+            <img src="{{ subcategory.image.url }}" class="card-img-top" alt="{{ subcategory.name }}" style="height: 180px; object-fit: cover;">
+          {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+              <i class="fas fa-box-open fa-3x text-muted"></i>
             </div>
-        {% endfor %}
+          {% endif %}
+          <div class="card-body text-center">
+            <h5 class="card-title text-dark mb-0">{{ subcategory.name }}</h5>
+          </div>
+        </div>
+      </a>
     </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 
-    <h2>Товары</h2>
-    <div class="row">
-        {% for product in products %}
-            <div class="col-md-4">
-                <a href="{% url 'product_detail' slug=product.slug %}" class="card-link">
-                    <div class="card">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
-                        {% endif %}
-                        <h3>{{ product.name }}</h3>
-                        <p>{{ product.description|striptags|slice:":50" }}...</p>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
+<!-- Products -->
+<div class="mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title d-inline-block mb-0">Товары</h2>
+    <div class="dropdown">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+        Сортировка
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">По популярности</a></li>
+        <li><a class="dropdown-item" href="#">По цене (возрастание)</a></li>
+        <li><a class="dropdown-item" href="#">По цене (убывание)</a></li>
+        <li><a class="dropdown-item" href="#">По новизне</a></li>
+      </ul>
     </div>
+  </div>
+
+  <div class="row g-4">
+    {% for product in products %}
+    <div class="col-xl-3 col-lg-4 col-md-6">
+      <div class="card h-100">
+        <a href="{% url 'product_detail' slug=product.slug %}">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: contain; padding: 1rem;">
+          {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+              <i class="fas fa-box-open fa-3x text-muted"></i>
+            </div>
+          {% endif %}
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{% url 'product_detail' slug=product.slug %}" class="text-decoration-none text-dark">{{ product.name }}</a>
+          </h5>
+          <p class="card-text text-muted">{{ product.short_description|default:""|truncatechars:100 }}</p>
+        </div>
+        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+<!--          <span class="fw-bold text-primary">{{ product.price }} ₽</span>-->
+<!--          <button class="btn btn-sm btn-primary">В корзину</button>-->
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        В этой категории пока нет товаров
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

@@ -3,230 +3,669 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}SimpleAdd – поставщик оборудования для 3D-производства{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}SimpleAdd – поставщик оборудования для 3D-производства.{% endblock %}">
-  <meta name="keywords"  content="{% block meta_keywords %}3D производство, оборудование, запчасти, расходные материалы{% endblock %}">
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript" >
-   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();
-   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  <meta name="keywords" content="{% block meta_keywords %}3D производство, оборудование, запчасти, расходные материалы{% endblock %}">
 
-   ym(102950805, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true,
-        webvisor:true
-   });
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/102950805" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lux/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/modern.css' %}">
-    <link rel="icon" href="{% static 'icons/favicon.ico' %}">
+    ym(102950805, "init", {
+          clickmap:true,
+          trackLinks:true,
+          accurateTrackBounce:true,
+          webvisor:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/102950805" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="icon" href="{% static 'icons/favicon.ico' %}">
+
+  <style>
+    .category-item {
+    margin-bottom: 10px;
+}
+
+.category-name,
+.subcategory-name {
+    display: inline-block;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.4;
+    max-width: 180px;
+}
+
+.subcategory-list {
+    margin-top: 5px;
+    padding-left: 10px;
+    border-left: 1px dashed #ddd;
+}
+
+.subcategory-list .nav-link {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.subcategory-list .nav-link:hover {
+    text-decoration: underline;
+}
+
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1e40af;
+      --accent-color: #f59e0b;
+      --dark-color: #1f2937;
+      --light-color: #f3f4f6;
+      --text-color: #374151;
+      --bg-color: #ffffff;
+      --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+
+    /* Header Styles */
+    .top-bar {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    .main-header {
+      background-color: var(--bg-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-brand img {
+      height: 60px;
+      transition: var(--transition);
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-link {
+      font-weight: 500;
+      padding: 0.5rem 0.75rem !important;
+      color: var(--dark-color) !important;
+      position: relative;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      white-space: nowrap;
+      margin: 0 0.25rem;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
+    .nav-link.active {
+      color: var(--primary-color) !important;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0.75rem;
+      width: calc(100% - 1.5rem);
+      height: 3px;
+      background-color: var(--primary-color);
+    }
+
+    /* Search Bar */
+    .search-bar {
+      border-radius: 50px;
+      border: 2px solid var(--light-color);
+      padding: 0.75rem 1.5rem;
+      transition: var(--transition);
+    }
+
+    .search-bar:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Hero Slider */
+    .hero-slider .slick-slide img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .hero-slider .slick-dots {
+      bottom: 20px;
+    }
+
+    .hero-slider .slick-dots li button:before {
+      color: white;
+      opacity: 0.5;
+      font-size: 10px;
+    }
+
+    .hero-slider .slick-dots li.slick-active button:before {
+      color: var(--accent-color);
+      opacity: 1;
+    }
+
+    /* Cards */
+    .card {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--card-shadow);
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-img-top {
+      height: 220px;
+      object-fit: cover;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      border-radius: 50px;
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      border-radius: 50px;
+      transition: var(--transition);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--bg-color);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 1.5rem;
+      margin-top: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-color) var(--light-color);
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: var(--light-color);
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background-color: var(--primary-color);
+      border-radius: 3px;
+    }
+
+    .sidebar h4 {
+      color: var(--dark-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.25rem;
+    }
+
+    .category-item {
+      margin-bottom: 0.75rem;
+      transition: var(--transition);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+
+    .category-item:hover {
+      background-color: rgba(37, 99, 235, 0.1);
+    }
+
+    .category-name {
+      margin-left: 0.75rem;
+      color: var(--dark-color);
+      font-weight: 500;
+      flex: 1;
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    .subcategory-list {
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
+      border-left: 2px solid var(--primary-color);
+    }
+
+    .subcategory-list a {
+      color: var(--text-color) !important;
+      padding: 0.25rem 0 !important;
+      display: block;
+      transition: var(--transition);
+      word-break: break-word;
+    }
+
+    .subcategory-list a:hover {
+      color: var(--primary-color) !important;
+      padding-left: 0.5rem !important;
+      background-color: transparent !important;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 3rem 0 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: var(--transition);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      margin-right: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .social-icon:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    /* Product Details */
+    .main-product-img {
+      max-height: 500px;
+      width: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      background: var(--light-color);
+      padding: 1.5rem;
+    }
+
+    .thumbnail-img {
+      cursor: pointer;
+      transition: var(--transition);
+      border-radius: 8px;
+      border: 2px solid transparent;
+    }
+
+    .thumbnail-img:hover, .thumbnail-img.active {
+      transform: scale(1.05);
+      border-color: var(--primary-color);
+    }
+
+    .product-title {
+      color: var(--dark-color);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .hero-slider .slick-slide img {
+        height: 400px;
+      }
+
+      .navbar-brand img {
+        height: 50px;
+      }
+
+      .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-item {
+        margin: 0.1rem;
+      }
+
+      .nav-link {
+        padding: 0.5rem !important;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-slider .slick-slide img {
+        height: 300px;
+      }
+
+      .card-img-top {
+        height: 180px;
+      }
+
+      .main-product-img {
+        max-height: 350px;
+      }
+
+      .sidebar {
+        margin-bottom: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-slider .slick-slide img {
+        height: 250px;
+      }
+
+      .product-title {
+        font-size: 1.75rem;
+      }
+    }
+
+    /* Utility Classes */
+    .section-title {
+      position: relative;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    .bg-gradient-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .text-accent {
+      color: var(--accent-color);
+    }
+
+    .rounded-lg {
+      border-radius: 12px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center py-1">
+        <div class="d-flex">
+          <div class="me-3">
+            <i class="fas fa-phone-alt me-2 text-accent"></i>
+            <a href="tel:+74951286991" class="text-white text-decoration-none">+7 (495) 128-69-91</a>
+          </div>
+          <div class="me-3 d-none d-md-block">
+            <i class="fas fa-envelope me-2 text-accent"></i>
+            <a href="mailto:info@simpeladd.ru" class="text-white text-decoration-none">info@simpeladd.ru</a>
+          </div>
+        </div>
+<!--        <div class="d-flex">-->
+<!--&lt;!&ndash;          <a href="#" class="text-white me-3"><i class="fab fa-vk"></i></a>&ndash;&gt;-->
+<!--&lt;!&ndash;          <a href="#" class="text-white me-3"><i class="fab fa-telegram"></i></a>&ndash;&gt;-->
+<!--&lt;!&ndash;          <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>&ndash;&gt;-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
 
-    <!-- Header -->
-    <header class="sticky-top">
-        <div class="container-fluid bg-white">
-            <!-- Top Bar -->
-            <div class="row align-items-center py-2 border-bottom">
-                <!-- Logo -->
-                <div class="col-lg-2 col-md-3 col-6">
-                    <a href="{% url 'index' %}" class="d-flex align-items-center">
-                        <img src="{% static 'icons/logo.png' %}" alt="SimpleAdd Logo" class="img-fluid" >
-                    </a>
-                </div>
+  <!-- Main Header -->
+  <header class="main-header sticky-top">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light py-3">
+        <div class="container-fluid">
+<a class="navbar-brand" href="{% url 'index' %}">
+    <img src="{% static 'icons/logo.png' %}" alt="SimpleAdd Logo" style="max-height: 50px; width: auto;">
+</a>
 
-                <!-- Contact Information -->
-                <div class="col-lg-5 d-none d-lg-block">
-                    <div class="d-flex justify-content-center">
-                        <div class="contact-item mx-3">
-                            <i class="fas fa-phone-alt me-2 text-primary"></i>
-                            <a href="tel:+74951286991" class="text-decoration-none text-dark">+7 (495) 128-69-91</a>
-                        </div>
-                        <div class="contact-item mx-3">
-                            <i class="fas fa-envelope me-2 text-primary"></i>
-                            <a href="mailto:info@simpeladd.ru" class="text-decoration-none text-dark">info@simpeladd.ru</a>
-                        </div>
-                        <div class="contact-item mx-3">
-                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                            <span>Москва, Вольная улица, 37с4</span>
-                        </div>
-                    </div>
-                    <p class="text-center text-muted mt-2 beautiful-phrase">
-                        SimpleAdd – поставщик оборудования для 3D производства
-                    </p>
-                </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-                <!-- Search Bar -->
-                <div class="col-lg-3 col-md-6 col-12 mt-3 mt-md-0">
-                    <form class="d-flex" method="get" action="{% url 'product_search' %}">
-                        <div class="input-group">
-                            <input type="search" name="query" class="form-control search-bar" placeholder="Поиск товаров..." aria-label="Search">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+          <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'index' %}">Главная</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'category' in request.path %}active{% endif %}" href="{% url 'category_list' %}">Каталог</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about_company' %}">О компании</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Услуги</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Информация</a>
+              </li>
+            </ul>
 
-
-            <!-- Navigation -->
-            <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
+            <form class="d-flex ms-lg-3 mb-3 mb-lg-0" method="get" action="{% url 'product_search' %}">
+              <div class="input-group">
+                <input type="search" name="query" class="form-control search-bar" placeholder="Поиск товаров..." aria-label="Search">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' %}">Главная</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'category_list' %}">Каталог</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about_company' %}">О компании</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Услуги</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Информация</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'post_list' %}">Блог</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+              </div>
+            </form>
+          </div>
         </div>
-    </header>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Main Content -->
-    <main class="container my-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-lg-3 d-none d-lg-block">
-                <div class="sidebar">
-                    <h4><i class="fas fa-list me-2"></i>Категории</h4>
-                    <ul class="nav flex-column">
-                        {% for category in categories %}
-                            <li class="nav-item category-item">
-                                <a class="nav-link d-flex align-items-center" href="{% url 'category_detail' category.id %}">
-                                    {% if category.image %}
-                                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid rounded" style="width: 30px; height: 30px; object-fit: cover;">
+  <!-- Main Content -->
+  <main class="container my-5">
+    <div class="row">
+
+
+      <!-- Sidebar -->
+    <aside class="col-lg-3 d-none d-lg-block">
+    <div class="sidebar sticky-top"
+         style="position: sticky; top: 140px; z-index: 10; max-height: calc(100vh - 160px); overflow-y: auto;">
+        <h4>
+            <i class="fas fa-list me-2"></i>Категории
+        </h4>
+        <ul class="nav flex-column" style="overflow-wrap: break-word;">
+            {% for category in categories %}
+                <li class="nav-item category-item">
+                    <a class="nav-link d-flex align-items-center" href="{% url 'category_detail' category.id %}">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}"
+                                 alt="{{ category.name }}"
+                                 class="img-fluid rounded me-2"
+                                 style="width: 30px; height: 30px; object-fit: cover;">
+                        {% else %}
+                            <i class="fas fa-folder me-2"
+                               style="width: 30px; text-align: center;"></i>
+                        {% endif %}
+                        <span class="category-name">{{ category.name }}</span>
+                    </a>
+
+                    {% if category.subcategories.exists %}
+                        <div class="subcategory-list ms-4">
+                            {% for subcategory in category.subcategories.all %}
+                                <a class="nav-link d-flex align-items-center"
+                                   href="{% url 'product_list' subcategory.id %}">
+                                    {% if subcategory.image %}
+                                        <img src="{{ subcategory.image.url }}"
+                                             alt="{{ subcategory.name }}"
+                                             class="img-fluid rounded me-2"
+                                             style="width: 25px; height: 25px; object-fit: cover;">
                                     {% else %}
-                                        <i class="fas fa-folder me-2" style="width: 30px; text-align: center;"></i>
+                                        <i class="fas fa-folder-open me-2"
+                                           style="width: 25px; text-align: center;"></i>
                                     {% endif %}
-                                    <span class="category-name">{{ category.name }}</span>
+                                    <span class="subcategory-name">{{ subcategory.name }}</span>
                                 </a>
-                                {% if category.subcategories.exists %}
-                                    <div class="subcategory-list">
-                                        {% for subcategory in category.subcategories.all %}
-                                            <a class="nav-link d-flex align-items-center" href="{% url 'product_list' subcategory.id %}">
-                                                {% if subcategory.image %}
-                                                    <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}" class="img-fluid rounded me-2" style="width: 25px; height: 25px; object-fit: cover;">
-                                                {% else %}
-                                                    <i class="fas fa-folder-open me-2" style="width: 25px; text-align: center;"></i>
-                                                {% endif %}
-                                                {{ subcategory.name }}
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </aside>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>
 
-            <!-- Content -->
-            <div class="col-lg-9 col-12">
-                {% block content %}{% endblock %}
-            </div>
+
+      <!-- Content -->
+      <div class="col-lg-9 col-12">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h4 class="mb-3">SimpleAdd</h4>
+          <p>Поставщик оборудования, запасных частей, расходных материалов и программного обеспечения для 3D производства.</p>
+<!--          <div class="mt-3">-->
+<!--            <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>-->
+<!--            <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>-->
+<!--            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>-->
+<!--            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>-->
+<!--          </div>-->
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5>SimpleAdd</h5>
-                    <p>Поставщик оборудования, запасных частей, расходных материалов и программного обеспечения для 3D производства.</p>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5>Контакты</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> Москва, Вольная улица, 37с4</li>
-                        <li><i class="fas fa-phone me-2"></i> +7 (495) 128-69-91</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@simpeladd.ru</li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Мы в соцсетях</h5>
-                    <div class="social-links">
-                        <a href="#" class="text-white me-2"><i class="fab fa-vk fa-lg"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-telegram fa-lg"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-youtube fa-lg"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                    </div>
-                    <div class="mt-3">
-                        <a href="#" class="text-white me-2">Политика конфиденциальности</a>
-                        <a href="#" class="text-white">Условия использования</a>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4 bg-light">
-            <div class="text-center">
-                <p class="mb-0">&copy; 2024 SimpleAdd. Все права защищены.</p>
-            </div>
+        <div class="col-lg-2 col-md-4 mb-4">
+          <h5 class="mb-3">Меню</h5>
+          <ul class="list-unstyled footer-links">
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li><a href="{% url 'category_list' %}">Каталог</a></li>
+            <li><a href="{% url 'about_company' %}">О компании</a></li>
+            <li><a href="#">Услуги</a></li>
+            <li><a href="#">Информация</a></li>
+          </ul>
         </div>
-    </footer>
+        <div class="col-lg-3 col-md-4 mb-4">
+          <h5 class="mb-3">Контакты</h5>
+          <ul class="list-unstyled footer-links">
+            <li><i class="fas fa-map-marker-alt me-2 text-accent"></i> Москва, Вольная улица, 37с4</li>
+            <li><i class="fas fa-phone me-2 text-accent"></i> +7 (495) 128-69-91</li>
+            <li><i class="fas fa-envelope me-2 text-accent"></i> info@simpeladd.ru</li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-4 mb-4">
+          <h5 class="mb-3">Информация</h5>
+          <ul class="list-unstyled footer-links">
+            <li><a href="#">Доставка и оплата</a></li>
+            <li><a href="#">Гарантия</a></li>
+            <li><a href="#">Политика конфиденциальности</a></li>
+            <li><a href="#">Условия использования</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="my-4 bg-light opacity-10">
+      <div class="text-center pt-2">
+        <p class="mb-0">&copy; 2024 SimpleAdd. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{% static 'js/scripts.js' %}"></script>
-<!-- jQuery (Slick’s dependency) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Slick JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
-<!-- Slick JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-
-{% block extra_js %}
-<script>
-  console.log('dom ready, initializing slider…');
-  $(function(){
-    $('.hero-slider').slick({
-      dots: true,
-      arrows: true,
-      infinite: true,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      slidesToShow: 1,
-      adaptiveHeight: true,
-      prevArrow: '<button class="slick-prev">&larr;</button>',
-      nextArrow: '<button class="slick-next">&rarr;</button>'
+  {% block extra_js %}
+  <script>
+    $(function(){
+      $('.hero-slider').slick({
+        dots: true,
+        arrows: true,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+      });
     });
-  });
-</script>
-{% endblock %}
-
+  </script>
+  {% endblock %}
 </body>
 </html>
